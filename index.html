@@ -331,16 +331,16 @@
             color: var(--gray-text);
         }
 
-/* --- Gallery Section (Model Kolom & Swipe IG) --- */
+        /* --- Gallery Section (Model Kolom & Swipe IG) --- */
         #gallery {
             background-color: var(--white);
         }
 
         .gallery-split {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Membagi menjadi 2x2 di desktop */
+            grid-template-columns: repeat(2, 1fr);
             gap: 40px;
-            row-gap: 60px; /* Jarak atas-bawah antar baris */
+            row-gap: 60px;
         }
 
         .gallery-column h3 {
@@ -348,6 +348,13 @@
             margin-bottom: 20px;
             font-size: 1.3rem;
             color: var(--navy);
+        }
+
+        /* Wrapper untuk tombol panah */
+        .carousel-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
         }
 
         /* Container untuk efek swipe */
@@ -358,33 +365,99 @@
             gap: 10px;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
+            width: 100%;
             
-            /* Menyembunyikan scrollbar agar rapi seperti IG */
-            -ms-overflow-style: none;  /* IE dan Edge */
-            scrollbar-width: none;  /* Firefox */
+            /* Menyembunyikan scrollbar */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
         .carousel-container::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: none;
         }
 
-        /* Elemen foto/video di dalam slider */
-        /* Ukuran Foto dan Video di dalam kotak */
+        /* Elemen foto di dalam slider */
         .carousel-item {
-            flex: 0 0 100%; /* Memaksa 1 item memenuhi 100% lebar kotaknya */
+            flex: 0 0 100%;
             scroll-snap-align: center;
             width: 100%;
-            height: 450px; /* Tinggi kolom tetap tidak berubah */
-            
-            /* INI KUNCINYA: Mengubah cover menjadi contain */
-            object-fit: contain; 
-            
-            /* Memberikan warna latar belakang untuk sisa ruang kosong (letterbox) */
-            background-color: var(--gray-bg); /* Anda bisa mengubahnya menjadi var(--navy) atau #000000 jika ingin latar belakang gelap untuk video */
-        }
-            object-fit: cover;
-            border-radius: var(--radius);
+            height: 450px;
+            object-fit: contain;
             background-color: var(--gray-bg);
+            border-radius: var(--radius);
+        }
+
+        /* KHUSUS UNTUK VIDEO: Container 1:1 */
+        .video-carousel-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 10px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            
+            /* Menyembunyikan scrollbar */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .video-carousel-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Item video dalam container 1:1 */
+        .video-carousel-item {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            width: 100%;
+            /* Membuat rasio 1:1 */
+            aspect-ratio: 1 / 1;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background-color: #000;
+            position: relative;
+        }
+
+        .video-carousel-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: #000;
+        }
+
+        /* Tombol navigasi slider */
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--navy);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 10;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-btn:hover {
+            background: var(--white);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .prev-btn {
+            left: -15px;
+        }
+
+        .next-btn {
+            right: -15px;
         }
 
         .swipe-hint {
@@ -394,11 +467,22 @@
             margin-top: 15px;
         }
 
-        /* Responsif untuk layar HP (Kolom ditumpuk atas-bawah) */
+        /* Responsif untuk layar HP */
         @media (max-width: 768px) {
             .gallery-split {
                 grid-template-columns: 1fr;
                 gap: 50px;
+            }
+            .slider-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            .prev-btn {
+                left: -5px;
+            }
+            .next-btn {
+                right: -5px;
             }
         }
 
@@ -457,12 +541,12 @@
 <body>
 
     <!-- Navbar -->
-<nav>
-    <div class="container nav-container">
-        <!-- Menggunakan Gambar Logo Asli -->
-        <a href="#" class="logo">
-            <img src="logokevin.png" style="height: 40px; width: auto; object-fit: contain;">
-        </a>
+    <nav>
+        <div class="container nav-container">
+            <!-- Menggunakan Gambar Logo Asli -->
+            <a href="#" class="logo">
+                <img src="logokevin.png" style="height: 40px; width: auto; object-fit: contain;">
+            </a>
             <ul class="nav-links">
                 <li><a href="#hero">About Me</a></li>
                 <li><a href="#experience">Experience</a></li>
@@ -561,14 +645,14 @@
                             <span class="exp-date">Panitia divisi acara</span>
                         </div>
                     </div>
-                    <p style="color: var(--gray-text); font-size: 0.95rem;">membantu membuat konsep acara, tema,dan rundown. Event yang ditanganin antara lain:PKKMB SWINS 2025, Seminar, dll.					</p>
+                    <p style="color: var(--gray-text); font-size: 0.95rem;">membantu membuat konsep acara, tema,dan rundown. Event yang ditanganin antara lain:PKKMB SWINS 2025, Seminar, dll.</p>
                 </div>
 
             </div>
         </div>
     </section>
 
-   <!-- Projects Section -->
+    <!-- Projects Section -->
     <section id="projects">
         <div class="container">
             <h2 class="section-title">Featured Projects</h2>
@@ -581,7 +665,7 @@
                         <h3>Photography</h3>
                         <div class="project-tags">
                             <span class="tag">Teknik-teknik Fotografi dasar</span>
-							<span class="tag">Pameran fotografi</span>
+                            <span class="tag">Pameran fotografi</span>
                         </div>
                         <p style="color: var(--gray-text); font-size: 0.9rem; margin-bottom: 15px;">Melakukan praktek teknik-teknik pemotretan, seperti: penggunaan shutter speed, angle kamera, dan pencahayaan. Contoh bisa klik "view project".</p>
                         
@@ -626,13 +710,14 @@
         </div>
     </section>
 
-galeri
-<section id="gallery">
+    <!-- Gallery Section -->
+    <section id="gallery">
         <div class="container">
             <h2 class="section-title">Gallery</h2>
             
             <div class="gallery-split">
                 
+                <!-- Kolom Graphic Design -->
                 <div class="gallery-column">
                     <h3>Graphic Design</h3>
                     <div class="carousel-wrapper">
@@ -650,24 +735,40 @@ galeri
                     </div>
                 </div>
 
+                <!-- Kolom Video & Animations (DIPERBAIKI) -->
                 <div class="gallery-column">
                     <h3>Video & Animations</h3>
-                  <video width="100%" height="auto" controls>
-  <source src="https://g.top4top.io/m_384208ehp1.mp4" type="video/mp4">
-  Maaf, browser Anda tidak mendukung pemutaran video.
-</video>
-					 <video width="100%" height="auto" controls>
-  <source src="https://h.top4top.io/m_3842vieux2.mp4" type="video/mp4">
-  Maaf, browser Anda tidak mendukung pemutaran video.
-</video>
-					<video width="100%" height="auto" controls>
-  <source src="https://i.top4top.io/m_3842pc1bm3.mov" type="video/mp4">
-  Maaf, browser Anda tidak mendukung pemutaran video.
-</video>
-					 <video width="100%" height="auto" controls>
-  <source src="https://j.top4top.io/m_3842smfxp4.mp4" type="video/mp4">
-  Maaf, browser Anda tidak mendukung pemutaran video.
-</video>
+                    <div class="carousel-wrapper">
+                        <div class="video-carousel-container" id="slider-video">
+                            <!-- Video 1 -->
+                            <div class="video-carousel-item">
+                                <video controls>
+                                    <source src="https://g.top4top.io/m_384208ehp1.mp4" type="video/mp4">
+                                    Maaf, browser Anda tidak mendukung pemutaran video.
+                                </video>
+                            </div>
+                            <!-- Video 2 -->
+                            <div class="video-carousel-item">
+                                <video controls>
+                                    <source src="https://h.top4top.io/m_3842vieux2.mp4" type="video/mp4">
+                                    Maaf, browser Anda tidak mendukung pemutaran video.
+                                </video>
+                            </div>
+                            <!-- Video 3 -->
+                            <div class="video-carousel-item">
+                                <video controls>
+                                    <source src="https://i.top4top.io/m_3842pc1bm3.mov" type="video/mp4">
+                                    Maaf, browser Anda tidak mendukung pemutaran video.
+                                </video>
+                            </div>
+                            <!-- Video 4 -->
+                            <div class="video-carousel-item">
+                                <video controls>
+                                    <source src="https://j.top4top.io/m_3842smfxp4.mp4" type="video/mp4">
+                                    Maaf, browser Anda tidak mendukung pemutaran video.
+                                </video>
+                            </div>
+                        </div>
                         <button class="slider-btn prev-btn" onclick="moveSlide('slider-video', -1)">
                             <i class="fas fa-chevron-left"></i>
                         </button>
@@ -677,13 +778,13 @@ galeri
                     </div>
                 </div>
 
+                <!-- Kolom Certificates -->
                 <div class="gallery-column">
                     <h3>Certificates</h3>
                     <div class="carousel-wrapper">
                         <div class="carousel-container" id="slider-cert">
                             <img src="sertif1.png" alt="Sertifikat 1" class="carousel-item">
                             <img src="sertif2.png" alt="Sertifikat 2" class="carousel-item">
-
                         </div>
                         <button class="slider-btn prev-btn" onclick="moveSlide('slider-cert', -1)">
                             <i class="fas fa-chevron-left"></i>
@@ -694,6 +795,7 @@ galeri
                     </div>
                 </div>
 
+                <!-- Kolom Organization & Events -->
                 <div class="gallery-column">
                     <h3>Organization & Events</h3>
                     <div class="carousel-wrapper">
@@ -746,7 +848,7 @@ galeri
         </div>
     </footer>
     
-<script>
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             
             // Fungsi universal untuk menggeser kotak galeri berdasarkan ID
@@ -778,25 +880,26 @@ galeri
             });
 
             // 2. VIDEO: Bergeser otomatis saat video selesai diputar
-            const videos = document.querySelectorAll('#slider-video video');
-            videos.forEach((video, index) => {
-                video.addEventListener('ended', () => {
-                    moveSlide('slider-video', 1); // Geser ke video selanjutnya
-                    
-                    // Putar video selanjutnya secara otomatis setelah bergeser
-                    const nextVideo = videos[index + 1];
-                    if (nextVideo) {
-                        setTimeout(() => nextVideo.play(), 600);
-                    } else if (videos.length > 0) {
-                         setTimeout(() => videos[0].play(), 600); // Kembali ke video pertama
-                    }
+            const videoSlider = document.getElementById('slider-video');
+            if (videoSlider) {
+                const videos = videoSlider.querySelectorAll('video');
+                videos.forEach((video, index) => {
+                    video.addEventListener('ended', () => {
+                        moveSlide('slider-video', 1); // Geser ke video selanjutnya
+                        
+                        // Putar video selanjutnya secara otomatis setelah bergeser
+                        const nextVideo = videos[index + 1];
+                        if (nextVideo) {
+                            setTimeout(() => nextVideo.play(), 600);
+                        } else if (videos.length > 0) {
+                            setTimeout(() => videos[0].play(), 600); // Kembali ke video pertama
+                        }
+                    });
                 });
-            });
+            }
             
         });
     </script>
-	
-</body>
-</html>
+    
 </body>
 </html>
